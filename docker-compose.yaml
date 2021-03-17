@@ -1,0 +1,33 @@
+version: "3.0"
+
+services:
+#  orientdb:
+#    image: "orientdb:latest"
+#    ports:
+#      - "2480:2480"
+#      - "2424:2424"
+#    env_file: .env
+#    volumes:
+#      - "./orientdb/config:/orientdb/config:z"
+#      - "./orientdb/databases:/orientdb/databases"
+
+  kraken:
+    build:
+      context: .
+      dockerfile: Dockerfile-develop
+    networks:
+      - bridge
+    volumes:
+      - "./app:/home/kraken/app"
+    #ports:
+    #  - "8022:22"
+
+
+networks:
+   kraken:
+      driver: bridge
+
+#networks:
+#  default:
+#    external:
+#      name: host

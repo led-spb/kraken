@@ -1,0 +1,1 @@
+select expand(@this.exclude('out_link','in_link','out_aggregatedlink','in_aggregatedlink')) from host where discovered is not null

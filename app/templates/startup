@@ -1,0 +1,68 @@
+#!/bin/sh
+
+cd `dirname $0` 
+
+start(){
+   {{process_cmdline}} >/dev/null 2>&1 &
+   echo $! >{{process_name}}.pid
+   sleep 2
+}
+
+stop(){
+   pkill -TERM -F {{process_name}}.pid
+   sleep 2
+}
+
+check_process(){
+   pgrep -F {{process_name}}.pid >/dev/null 2>&1
+}
+
+
+
+case "$1" in
+   start)
+      check_process && (echo Allready started; exit 1)
+      start
+      if check_process; then
+         echo Started OK
+         exit 0
+      else
+         echo Starting FAIL
+         exit 1
+      fi
+      ;;
+   stop)
+      check_process || (echo Not started; exit 1 )
+      stop
+      if check_process; then
+         echo Stopping FAIL
+         exit 1
+      else
+         echo Stopped OK
+         exit 0
+      fi
+      ;;
+   restart)
+      stop
+      start
+      if check_process; then
+         echo Started OK
+         exit 0
+      else
+         echo Starting FAIL
+         exit 1
+      fi      
+      ;;
+   status)
+      if check_process; then
+         echo Started
+         exit 0
+      else
+         echo Stopped
+         exit 1
+      fi      
+      ;;
+   *)
+      echo "Usage: $(basename $0) start|stop|restart|status"
+esac
+exit 2

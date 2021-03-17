@@ -1,0 +1,4 @@
+# Create a base image with all the packages needed for successfully build
+FROM python:2.7-slim
+ADD ./requirements ./
+RUN pip install --no-cache -r requirements

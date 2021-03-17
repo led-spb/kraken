@@ -1,0 +1,3 @@
+---
+- name: restart kapacitor
+  shell: "{{kapacitor_home}}/kapacitord.sh restart"

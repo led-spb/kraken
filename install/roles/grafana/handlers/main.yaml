@@ -1,0 +1,4 @@
+---
+ - name: restart grafana
+   shell: "{{grafana_home}}/grafana.sh restart"
+   

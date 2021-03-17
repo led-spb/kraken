@@ -1,0 +1,16 @@
+/influxdb
+/grafana
+/orientdb/databases
+/kapacitor
+/install/packages
+target
+*.ipr
+*.iml
+*.iws
+*.retry
+.idea
+*.pyc
+*.retry
+*.log
+*.csv
+.password

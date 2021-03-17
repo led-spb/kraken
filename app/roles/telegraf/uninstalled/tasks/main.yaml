@@ -1,0 +1,3 @@
+---
+  - name: Stopping telegraf agent
+    shell: "{{telegraf_home}}/telegraf-ctl.sh stop"

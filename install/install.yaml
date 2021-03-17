@@ -1,0 +1,9 @@
+---
+hosts: kraken
+gather_facts: no
+roles:
+  - common
+  - orientdb
+  - influxdb
+  - kapacitor
+  - grafana

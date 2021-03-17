@@ -1,0 +1,7 @@
+---
+- name: Run Kraken DIS agent
+  hosts: node
+  gather_facts: no
+  tasks:
+     - name: kraken_discovery_agent
+       kraken_discovery:

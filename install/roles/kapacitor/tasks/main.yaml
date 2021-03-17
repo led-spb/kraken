@@ -1,0 +1,57 @@
+---
+  - name: Create kapacitor directory
+    file:
+      path: "{{ item }}"
+      state: directory
+      mode: 0755
+    with_items:
+      - "{{ kapacitor_home }}"
+    tags:
+      - kapacitor
+
+
+  - name: Unpacking kapacitor
+    unarchive:
+      src: packages/kapacitor-1.3.1_linux_amd64.tar.gz
+      dest: "{{kapacitor_home}}"
+      extra_opts: "--strip-components=2"
+    notify: restart kapacitor
+    tags:
+      - kapacitor
+      - install
+
+
+  - name: Cleaning installation
+    file:
+      path: "{{kapacitor_home}}/{{ item }}"
+      state: absent
+    with_items:
+      - /var/log
+      - /var/lib
+    tags:
+      - kapacitor
+
+
+  - name: Create startup script
+    vars:
+      process_cmdline: "nohup usr/bin/kapacitord --config kapacitor.conf >/dev/null 2>&1"
+      process_name: "kapacitor"
+      process_detached: no
+    template:
+      src: "startup"
+      dest: "{{kapacitor_home}}/kapacitor-ctl.sh"
+      mode: 0755
+    notify: restart kapacitor
+    tags:
+      - kapacitor
+
+
+  - name: Create configuration
+    template:
+      src: "{{item}}"
+      dest: "{{kapacitor_home}}"
+    with_items:
+      - kapacitor.conf
+    notify: restart kapacitor
+    tags:
+      - kapacitor

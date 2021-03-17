@@ -1,0 +1,2 @@
+[kraken]
+localhost   ansible_connection=local

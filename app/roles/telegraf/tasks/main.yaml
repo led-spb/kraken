@@ -1,0 +1,73 @@
+---
+  - name: Create telegraf directory
+    file:
+      path: "{{ item }}"
+      state: directory
+      mode: 0755
+    with_items:
+      - "{{ telegraf_home }}"
+      - "{{ telegraf_home }}/telegraf.d"
+    tags:
+      - telegraf
+    register: clean_install
+
+  - name: Unpacking telegraf
+    unarchive:
+      src: packages/telegraf-1.4.1_linux_amd64.tar.gz
+      dest: "{{telegraf_home}}"
+      extra_opts: "--strip-components=2"
+    when: clean_install.changed
+    tags:
+      - telegraf
+      
+  - name: Create startup script
+    vars:
+      process_name: telegraf
+      process_cmdline: "nohup usr/bin/telegraf --config=telegraf.conf --config-directory=telegraf.d >/dev/null 2>&1"
+    template:
+      src: "startup"
+      dest: "{{telegraf_home}}/telegraf-ctl.sh"
+      mode: 0755
+    notify: restart telegraf
+    tags:
+      - telegraf
+
+  - name: Create configuration
+    template:
+      src: "{{item}}"
+      dest: "{{telegraf_home}}"
+      mode: 0644
+    with_items:
+      - telegraf.conf
+    notify: restart telegraf
+    tags:
+      - telegraf
+      
+  - name: Self-monitor configuration
+    template:
+      src: selfmon.conf
+      dest: "{{telegraf_home}}/telegraf.d/"
+      mode: 0644
+    notify: restart telegraf
+    tags:
+      - telegraf
+      
+  - name: Monitor tcp configuration
+    get_url:
+      url: "http://{{kraken_api_host}}:{{kraken_api_port}}/monitor?host={{ansible_host}}"
+      dest: "{{telegraf_home}}/telegraf.d/kraken_tcp.conf"
+      force: yes
+      mode: 0644
+    notify: restart telegraf
+    tags:
+      - telegraf
+      
+  - name: Check monitor agent status
+    shell: "{{telegraf_home}}/telegraf-ctl.sh status"
+    ignore_errors: yes
+    register: telegraf_status
+    failed_when: telegraf_status.rc == 2
+    changed_when: telegraf_status.rc == 1
+    notify: restart telegraf
+    tags:
+      - telegraf

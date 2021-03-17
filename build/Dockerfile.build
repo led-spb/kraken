@@ -1,0 +1,9 @@
+# Image must build from project root directory
+FROM kraken-prereq:latest
+
+ADD ./app /kraken/app
+ADD ./kraken.sh /kraken/
+ADD ./build/build.sh /kraken/build/
+
+WORKDIR /kraken/build
+CMD ["/bin/sh","build.sh"]

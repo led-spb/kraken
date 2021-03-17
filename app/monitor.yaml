@@ -1,0 +1,6 @@
+- name: Install Kraken MON agent
+  hosts: monitor
+  gather_facts: no
+  roles:
+    - common
+    - telegraf

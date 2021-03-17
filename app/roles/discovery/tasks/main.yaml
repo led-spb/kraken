@@ -1,0 +1,4 @@
+---
+   - name: Execute discovery agent
+     script: "./kraken-discovery.py {{kraken_api_host}} {{kraken_api_port}}"
+      

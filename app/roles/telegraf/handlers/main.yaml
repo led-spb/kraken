@@ -1,0 +1,6 @@
+---
+  - name: restart telegraf
+    shell: "{{telegraf_home}}/telegraf-ctl.sh restart"
+
+  - name: stop telegraf
+    shell: "{{telegraf_home}}/telegraf-ctl.sh stop"

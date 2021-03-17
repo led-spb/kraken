@@ -1,0 +1,9 @@
+[central]
+localhost   ansible_connection=local
+
+[monitor]
+
+[node]
+example-host1
+example-host2
+example-host3

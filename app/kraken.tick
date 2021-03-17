@@ -1,0 +1,19 @@
+var net_response = stream 
+    | from()
+        .database('kraken')
+        .measurement('net_response')
+        .groupBy('host','server','port')
+    | window()
+        .period(60s)
+        .every(30s)
+
+
+net_response 
+ | last('result_type')
+     .as('value')
+ | alert()
+     .info( lambda: "value" == 'success' )
+     .crit( lambda: "value" != 'success' )
+     .stateChangesOnly()
+     .log('/data/usnmp/kraken/metrics.log')
+        .mode(0644)

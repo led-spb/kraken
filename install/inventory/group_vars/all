@@ -1,0 +1,16 @@
+kraken_home: ~/kraken
+telegraf_home: "{{kraken_home}}/telegraf"
+
+influxdb_host: sib-mon-web01
+influxdb_port: 7086
+influx_api_port: "{{influx_db_port}}"
+influxdb_database: kraken
+
+orientdb_user: root
+orientdb_password: admin
+orientdb_database: kraken
+
+influxdb_home:  "{{kraken_home}}/influxdb"
+grafana_home:   "{{kraken_home}}/grafana"
+orientdb_home:  "{{kraken_home}}/orientdb"
+kapacitor_home: "{{kraken_home}}/kapacitor"

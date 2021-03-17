@@ -1,0 +1,8 @@
+influxdb_home:  "{{kraken_home}}/influxdb"
+grafana_home:   "{{kraken_home}}/grafana"
+orientdb_home:  "{{kraken_home}}/orientdb"
+kapacitor_home: "{{kraken_home}}/kapacitor"
+
+orientdb_user: root
+orientdb_password: admin
+orientdb_database: kraken
